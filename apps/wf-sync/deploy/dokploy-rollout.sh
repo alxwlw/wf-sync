@@ -57,6 +57,11 @@ case ${1:-} in
 esac
 
 [ -f "$COMPOSE_FILE" ] || die "no $COMPOSE_FILE here: run from apps/wf-sync/deploy"
+checkout_head=$(git rev-parse --short HEAD 2>/dev/null || echo 'no git')
+checkout_branch=$(git branch --show-current 2>/dev/null || true)
+checkout_dirty=
+[ -z "$(git status --porcelain 2>/dev/null)" ] || checkout_dirty=', dirty'
+echo "Compose: $COMPOSE_FILE at $checkout_head (${checkout_branch:-detached}$checkout_dirty)"
 [ -f "$CONFIG_FILE" ] || die "no config at $CONFIG_FILE"
 
 required_field() {

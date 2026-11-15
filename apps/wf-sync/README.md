@@ -48,6 +48,9 @@ compose is a tailnet node of its own, `https://wealthfolio.<tailnet>.ts.net` (ta
 to Wealthfolio over the compose network. No port is published on the host; wf-sync reaches Wealthfolio at
 `http://wealthfolio:8088` the same way.
 
+`deploy/dokploy-rollout.sh` deploys the compose of the checkout it runs from (it prints that checkout's commit,
+branch and `dirty` before the diff), so run it from an up-to-date `main`.
+
 1. In Dokploy, create an API key. Where `op` can write, run `deploy/op-init.sh`: it creates the 1Password
    item with a generated password and encryption key. **Without `WF_SECRET_KEY` neither the database nor
    its backups can be opened.** The host also needs read access to
