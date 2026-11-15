@@ -1,5 +1,10 @@
 # Wealthfolio + wf-sync as a Dokploy compose app (source type raw). dokploy-rollout.sh uploads this
 # file, the env and config.yaml; Dokploy keeps config.yaml in ../files/, next to this file's code/.
+#
+# The UI is reachable only from the tailnet, through the `tailscale` service below. It is a tailnet node of its own
+# (wealthfolio.<tailnet>.ts.net, tag:apps): its serve terminates HTTPS on 443 and proxies to wealthfolio:8088 by
+# service name (DX-196). Nothing is published on the host. wf-sync reaches Wealthfolio at http://wealthfolio:8088
+# over the compose network.
 
 x-logging: &logging
   driver: json-file
@@ -7,13 +12,54 @@ x-logging: &logging
     max-size: 50m
     max-file: '3'
 
+configs:
+  ts-serve:
+    # $$ keeps compose from interpolating it; containerboot replaces ${TS_CERT_DOMAIN} with the node's ts.net name.
+    content: |
+      {"TCP": {"443": {"HTTPS": true}},
+       "Web": {"$${TS_CERT_DOMAIN}:443": {"Handlers": {"/": {"Proxy": "http://wealthfolio:8088"}}}}}
+
 services:
+  tailscale:
+    image: tailscale/tailscale:v1.104.7@sha256:72c1e19e0aedca96b8533bbb0b4368564410ff20b17e53b804eb6c1f04a31be4
+    restart: unless-stopped
+    logging: *logging
+    environment:
+      TS_HOSTNAME: wealthfolio
+      # A single-use, pre-approved tag:apps key that dokploy-rollout.sh mints with the OAuth client and that expires
+      # in an hour. Not the OAuth secret itself: containerboot passes this value in `tailscale up` argv, which /proc
+      # shows to all.
+      TS_AUTHKEY: ${TS_AUTHKEY:?dokploy-rollout.sh sets it}
+      TS_EXTRA_ARGS: --advertise-tags=tag:apps
+      # Log in only while the state volume holds no node: a redeploy keeps the same device and never uses the key.
+      TS_AUTH_ONCE: 'true'
+      TS_STATE_DIR: /var/lib/tailscale
+      TS_SERVE_CONFIG: /config/serve.json
+      # Serve only proxies to another container, so neither /dev/net/tun nor NET_ADMIN is needed.
+      TS_USERSPACE: 'true'
+      TS_ENABLE_HEALTH_CHECK: 'true'
+      TS_LOCAL_ADDR_PORT: 127.0.0.1:9002
+    configs:
+      - source: ts-serve
+        target: /config/serve.json
+    volumes:
+      - tailscale:/var/lib/tailscale
+    healthcheck:
+      test: ['CMD', 'wget', '-q', '-O', '/dev/null', 'http://127.0.0.1:9002/healthz']
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 60s
+    security_opt:
+      - no-new-privileges:true
+    cap_drop:
+      - ALL
+
   wealthfolio:
     image: wealthfolio/wealthfolio:3.12.0@sha256:5790528fcd9795b571176cad78bcca09e3fa5875ec20968356586939e154c3cb
     restart: unless-stopped
     logging: *logging
-    ports:
-      - '127.0.0.1:8088:8088' # the tailnet reaches it through `tailscale serve`, the internet doesn't
+    # No published port: only the tailscale service and wf-sync reach it, over the compose network.
     environment:
       WF_LISTEN_ADDR: 0.0.0.0:8088
       WF_DB_PATH: /data/wealthfolio.db
@@ -60,3 +106,5 @@ services:
 volumes:
   wealthfolio-data:
   wf-sync-data:
+  # The node's identity: lose it and the next start registers a new device (wealthfolio-1).
+  tailscale:

@@ -43,16 +43,25 @@ sets it to `base_currency` from the config (USD by default). Change it in Wealth
 ## On Dokploy
 
 [`deploy/`](deploy) runs the same two services as a Dokploy compose app, for a host with Docker, Tailscale
-and read access to 1Password. The UI stays off the internet: Wealthfolio listens on `127.0.0.1:8088` and
-`tailscale serve` publishes it to the tailnet on port 8445.
+and read access to 1Password. The UI stays off the internet and off the host: a `tailscale` sidecar in the
+compose is a tailnet node of its own, `https://wealthfolio.<tailnet>.ts.net` (tag `tag:apps`), and proxies
+to Wealthfolio over the compose network. No port is published on the host; wf-sync reaches Wealthfolio at
+`http://wealthfolio:8088` the same way.
+
+`deploy/dokploy-rollout.sh` deploys the compose of the checkout it runs from (it prints that checkout's commit,
+branch and `dirty` before the diff), so run it from an up-to-date `main`.
 
 1. In Dokploy, create an API key. Where `op` can write, run `deploy/op-init.sh`: it creates the 1Password
    item with a generated password and encryption key. **Without `WF_SECRET_KEY` neither the database nor
-   its backups can be opened.**
+   its backups can be opened.** The host also needs read access to
+   `op://env-devsrvr/tailscale-apps/oauth-client-secret`, the Tailscale OAuth client the rollout mints the
+   sidecar's single-use key with.
 2. Write `~/.config/wf-sync/config.yaml` from `config.example.yaml`. It holds no secrets, only `${NAME}`.
-3. Publish the UI once: `sudo tailscale serve --bg --https=8445 http://127.0.0.1:8088`.
-4. From `apps/wf-sync/deploy`, run `dokploy-rollout.sh`. It finds or creates the app, replaces its env and
-   config, deploys and runs `check`. Run it again after any change to the item or the config.
+3. From `apps/wf-sync/deploy`, run `dokploy-rollout.sh --check`: it reads only and prints the compose and
+   `config.yaml` diffs and each env name as new, changed, same or removed. Then `dokploy-rollout.sh --apply`
+   finds or creates the app, replaces its env and config, deploys, waits for the node and for a finished sync pass. Run
+   it again after any change to the item or the config. The Wealthfolio session belongs to the host name:
+   log in again on the new address.
 
 To switch a connector on, add its variables to the 1Password item (one field per variable, named as in
 `docker-compose.dokploy.yml`), add the connector to `config.yaml`, and run the rollout. A `${NAME}` that
