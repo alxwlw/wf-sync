@@ -174,14 +174,14 @@ settings:
 catalogs:
   dev:
     '@alxwlw/oxlint-config':
-      specifier: 1.18.0
-      version: 1.18.0
+      specifier: 1.18.2
+      version: 1.18.2
     '@alxwlw/stack':
-      specifier: 1.18.0
-      version: 1.18.0
+      specifier: 1.18.2
+      version: 1.18.2
     '@alxwlw/tsconfig':
-      specifier: 1.18.0
-      version: 1.18.0
+      specifier: 1.18.2
+      version: 1.18.2
     '@types/bun':
       specifier: 1.4.4
       version: 1.4.4
@@ -204,13 +204,13 @@ importers:
     devDependencies:
       '@alxwlw/oxlint-config':
         specifier: catalog:dev
-        version: 1.18.0(oxlint-tsgolint@7.0.2007)(oxlint@1.94.0(oxlint-tsgolint@7.0.2007))
+        version: 1.18.2(oxlint-tsgolint@7.0.2007)(oxlint@1.94.0(oxlint-tsgolint@7.0.2007))
       '@alxwlw/stack':
         specifier: catalog:dev
-        version: 1.18.0
+        version: 1.18.2
       '@alxwlw/tsconfig':
         specifier: catalog:dev
-        version: 1.18.0
+        version: 1.18.2
       oxfmt:
         specifier: catalog:dev
         version: 0.79.0
@@ -235,7 +235,7 @@ importers:
     devDependencies:
       '@alxwlw/tsconfig':
         specifier: catalog:dev
-        version: 1.18.0
+        version: 1.18.2
       '@types/bun':
         specifier: catalog:dev
         version: 1.4.4
@@ -245,8 +245,8 @@ importers:
 
 packages:
 
-  '@alxwlw/oxlint-config@1.18.0':
-    resolution: {integrity: sha512-PbD8rTScam6oOr30+8o8j5cOTQML9HVeIY4AglSv0pFYRE3bo6e01xl6C996CFg4rlefIOvnzicBa3OcyRkjRA==}
+  '@alxwlw/oxlint-config@1.18.2':
+    resolution: {integrity: sha512-vA25BZvvt3RqLNsWfKcWPIg9unNidCzHIdMNgEkcXuUAH8+pNMhVP3VjAsPUD/GUH5fKmxrcEde0nNvYmt3Vkw==}
     peerDependencies:
       oxlint: '>=1.74.0'
       oxlint-tsgolint: '>=0.25.0'
@@ -254,17 +254,17 @@ packages:
       oxlint-tsgolint:
         optional: true
 
-  '@alxwlw/repo-rules@1.18.0':
-    resolution: {integrity: sha512-F1N7q9JBNSIWGXLkM7Qae0x/Lt6D/OC8J3ptfrjX2TAkOCa+XuAUPdZL0lr5p/GiAWpLKXtcfy3XhE7+NGLFOA==}
+  '@alxwlw/repo-rules@1.18.2':
+    resolution: {integrity: sha512-+j7oVSZCZdmr3C+svf5uqA+mXGqe54a+ObzB2XfRiIMiYCFiomaYR4cnuNhaTjNnAeQQ3Nqhm2cSonbX8muzUw==}
     engines: {node: '>=20'}
     hasBin: true
 
-  '@alxwlw/stack@1.18.0':
-    resolution: {integrity: sha512-aDjrtC2ocoNRcYOxhzNZo9mFtnt7GNx5vncL2fVLQWd3cqj4bmkUBNM274X1IWUUsKX3SsGdtn2Jh/Uw9C3TeQ==}
+  '@alxwlw/stack@1.18.2':
+    resolution: {integrity: sha512-9QvyyivPqPrK9E/Kd7HenDl2XncAnT9WTKWtjpipoDei6PZib5FDKgoXptUFVf4a8BMT9LKAo5DplJxAGJJOFA==}
     hasBin: true
 
-  '@alxwlw/tsconfig@1.18.0':
-    resolution: {integrity: sha512-MmioszxNhMZ0/TKL2p2vrc753dHgOYOwyz/wB32+lNQWETp0EHcR6qGlmDI4uV90guMUP+9QwN7guaQT33KPSw==}
+  '@alxwlw/tsconfig@1.18.2':
+    resolution: {integrity: sha512-6YiEwj951ccJF8yXuszliZ2t9RyeRzqQlCb2NpAANEW5+dnVAvQAPVIN9BjJ1h10qQYRN+fUjQF8ftQ1hj1Seg==}
 
   '@microsoft/tsdoc-config@0.18.3':
     resolution: {integrity: sha512-0I0rGXo1eJziw3EEErkDS9p/0RzBcyOiV+zbSDqOZTeURmhtut+WIvpih0LM5g+ZpZ9SyFxDfkhAcl/r8e2zGw==}
@@ -1148,7 +1148,7 @@ packages:
 
 snapshots:
 
-  '@alxwlw/oxlint-config@1.18.0(oxlint-tsgolint@7.0.2007)(oxlint@1.94.0(oxlint-tsgolint@7.0.2007))':
+  '@alxwlw/oxlint-config@1.18.2(oxlint-tsgolint@7.0.2007)(oxlint@1.94.0(oxlint-tsgolint@7.0.2007))':
     dependencies:
       '@microsoft/tsdoc': 0.17.1
       '@microsoft/tsdoc-config': 0.18.3
@@ -1156,11 +1156,11 @@ snapshots:
     optionalDependencies:
       oxlint-tsgolint: 7.0.2007
 
-  '@alxwlw/repo-rules@1.18.0': {}
+  '@alxwlw/repo-rules@1.18.2': {}
 
-  '@alxwlw/stack@1.18.0':
+  '@alxwlw/stack@1.18.2':
     dependencies:
-      '@alxwlw/repo-rules': 1.18.0
+      '@alxwlw/repo-rules': 1.18.2
       json5: 2.2.3
       jsonc-parser: 3.3.1
       markdownlint-cli2: 0.24.2
@@ -1168,7 +1168,7 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  '@alxwlw/tsconfig@1.18.0': {}
+  '@alxwlw/tsconfig@1.18.2': {}
 
   '@microsoft/tsdoc-config@0.18.3':
     dependencies:
