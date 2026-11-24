@@ -2,5 +2,9 @@
 // Keep the canon preset in `extends`: it turns Renovate off for what `stack sync` moves.
 {
 	$schema: 'https://docs.renovatebot.com/renovate-schema.json',
-	extends: ['config:recommended', 'github>alxwlw/stack//renovate/canon.json5#v1'],
+	extends: [
+		'config:recommended',
+		'github>alxwlw/stack//renovate/canon.json5#v1',
+		'github>alxwlw/stack//renovate/automerge.json5#v1',
+	],
 }
