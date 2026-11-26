@@ -2,7 +2,7 @@
 	"name": "wf-sync",
 	"private": true,
 	"type": "module",
-	"packageManager": "pnpm@12.21.0",
+	"packageManager": "pnpm@12.23.0",
 	"devDependencies": {
 		"@alxwlw/oxlint-config": "catalog:dev",
 		"@alxwlw/stack": "catalog:dev",
